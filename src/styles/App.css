@@ -1,9 +1,4 @@
-.App {
-  height: 100vh;
-  background-color: #0d1116;
-  text-align: center;
-  color: white;
-}
+
 
 .logo{
   width: 20px;
@@ -11,15 +6,6 @@
   margin-right: 10px;
 }
 
-.right{
-  display: flex;
-  background: black;
-  border-radius: 16px;
-  padding: 12px 20px;
-  height: 99%;
-  margin-right: 10%;
-  margin-top: 10px;
-}
 
 .content-container {
   background-color: #a200d6;
@@ -40,21 +26,9 @@
 
 
 
-.mint-button {
-  background: -webkit-linear-gradient(left, #a200d6, #ff6fdf);
-  font-size: 18px;
-  background-size: 200% 200%;
-  animation: gradient-animation 4s ease infinite;
-  margin: 20px 10px;
-  border-radius: 20px;
-  padding: 0px 2rem;
-}
 
-.mint-button:disabled{
-  background: #550072;
-  color: rgb(209, 209, 209);
-  cursor: not-allowed;
-}
+
+
 
 .mint-row{
   display: flex;
@@ -95,35 +69,13 @@
   font-weight: bold;
 }
 
-.form-container{
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
 
-input{
-  border: 0;
-  border-radius: 12px;
-  background-color: black;
-  color: white;
-  letter-spacing: 1px;
-  font-size: 26px;
-  width: 400px;
-  margin-bottom: 10px;
-  padding: 10px 20px;
-  text-align: center;
-}
 
-input::placeholder {
-  color: gray;
-  letter-spacing: 2px;
-}
 
-input:focus {
-  outline: none;
-}
+
+
+
+
 
 .first-row{
   position: relative;
