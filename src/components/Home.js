@@ -120,7 +120,7 @@ const FormInput = styled.input`
   }
 `;
 
-const ButtonContainers = styled.div``;
+const ButtonsContainer = styled.div``;
 
 const ButtonOne = styled.button`
   height: 45px;
@@ -207,6 +207,11 @@ const Home = () => {
   const [profession, setProfession] = useState("");
   const [profilePic, setProfilePic] = useState("");
   const [network, setNetwork] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [editing, setEditing] = useState(false);
+
+
+
 
   const connectYourWallet = async () => {
     try {
@@ -337,6 +342,31 @@ const Home = () => {
     }
   };
 
+  const updateDomain = async() => {
+    if (!record || !domain) {
+      return;
+    }
+    setLoading(true);
+    console.log("Updating domain", domain, "with record", record);
+
+    try {
+      const {ethereum} = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(CONTRACT_ADDRESS, Domains.abi, signer);
+        let tx = await contract.setRecord(domain, record);
+        await tx.wait();
+        console.log("Record set https://mumbai.polygonscan.com/tx/"+tx.hash);
+        fetchMints();
+			setRecord('');
+			setDomain('');
+      }
+    } catch(error) {
+      console.log(error)
+    }
+    setLoading(false);
+  }
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
@@ -382,6 +412,9 @@ const Home = () => {
       );
     }
   };
+  const fetchMints = async () => {
+
+  }
 
   const renderInputForm = () => {
     if (network !== "Polygon Mumbai Testnet") {
@@ -435,11 +468,25 @@ const Home = () => {
           placeholder="link a profile pic link to this domain?"
           onChange={(e) => setProfilePic(e.target.value)}
         />
-        <ButtonContainers>
-          <ButtonOne disabled={null} onClick={mintDomain}>
-            Mint
-          </ButtonOne>
-        </ButtonContainers>
+       
+       {editing ? (
+						<ButtonsContainer>
+						
+							<ButtonOne disabled={loading} onClick={updateDomain}>
+								Set record
+							</ButtonOne>  
+						
+							<ButtonOne onClick={() => {setEditing(false)}}>
+								Cancel
+							</ButtonOne>  
+						</ButtonsContainer>
+					) : (
+						// If editing is not true, the mint button will be returned instead
+						<ButtonOne disabled={loading} onClick={mintDomain}>
+							Mint
+						</ButtonOne>  
+					)}
+        
       </FormContainer>
     );
   };
