@@ -5,6 +5,7 @@ import Domains from "../utils/Domains.json";
 import polygonLogo from "../assets/polygonlogo.png";
 import ethLogo from "../assets/ethlogo.png";
 import { networks } from "../utils/networks";
+import { mobile } from "../responsive";
 
 const Container = styled.div`
   height: 100%;
@@ -25,7 +26,8 @@ const NotConnected = styled.div`
 
 const Image = styled.img`
   margin-bottom: 30px;
-`;
+  ${mobile({ width: "50%", marginBottom: "50px" })}`;
+
 
 const ConnectWalletButton = styled.button`
   background-image: linear-gradient(
@@ -51,6 +53,36 @@ const ConnectWalletContainer = styled.div``;
 
 const HeaderContainer = styled.div`
   padding-top: 30px;
+  ${mobile({ display: "flex", flexDirection: "column" })}`;
+
+const MintItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin: 10px 15px;
+  font-size: 18px;
+  background-color: #c4b7fa;
+  color: black;
+  min-width: 150px;
+  max-width: fit-content;
+  box-shadow: 0px 0px 10px 3px rgba(255, 255, 255, 0.2);
+
+  :nth-child(2n) {
+    background-color: lightblue;
+  }
+
+  :nth-child(3n) {
+    background-color:cyan;
+  }
+`;
+
+const MintRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const Title = styled.p`
@@ -59,7 +91,8 @@ const Title = styled.p`
   font-weight: 600;
   font-size: 34px;
   font-family: "Poppins", sans-serif;
-`;
+  ${mobile({ fontSize: "20px" })}`;
+
 
 const Footer = styled.footer`
   background: red;
@@ -74,16 +107,19 @@ const Header = styled.header`
   flex-direction: row;
   justify-content: space-between;
   padding: 10px 10px 10px 10px;
+  ${mobile({ display: "flex", flexDirection: "column", fontSize:"10px", alignItems: "center", justifyContent: "center", textOverflow: "none", padding:"0", marginLeft: "50px", marginRight: "20px" })};
 `;
 
 const Left = styled.div`
   text-align: left;
   margin-left: 10%;
+  ${mobile({marginLeft: "0px"})}
 `;
 
 const Subtitle = styled.span`
   font-size: 25px;
-  color: white;
+  color: ${props => props.color};
+  ${mobile({ fontSize: "15px", textAlign: "center" })}
 `;
 
 const FormContainer = styled.form`
@@ -92,7 +128,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
+  `;
 
 const FormInput = styled.input`
   border: 0;
@@ -107,12 +143,16 @@ const FormInput = styled.input`
   color: black;
   font-weight: 600;
   font-family: "Poppins", sans-serif;
+  ${mobile({width: "250px"})}
+  
+  ;
 
   &::placeholder {
     color: gray;
     letter-spacing: 0.1px;
     font-size: 19px;
     font-weight: 200;
+    ${mobile({fontSize: "14px"})}
   }
 
   &:focus {
@@ -137,7 +177,11 @@ const ButtonOne = styled.button`
   margin-right: 10px;
 
   &:hover {
-    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+    background: radial-gradient(
+      circle,
+      rgba(63, 94, 251, 1) 0%,
+      rgba(252, 70, 107, 1) 100%
+    );
     color: black;
     font-weight: bolder;
   }
@@ -194,7 +238,32 @@ const Right = styled.div`
   margin-top: 10px;
   font-family: "Poppins";
   font-weight: bolder;
+  ${mobile({marginBottom: "10px"})}
 `;
+
+const EditButton = styled.button`
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 3px;
+  top: 20px;
+  border: 0px;
+  font-size: 12px;
+  background-color: transparent;
+`;
+const EditImage = styled.img`
+  width: 12px;
+`;
+
+const MintList = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  ${mobile({ display: "-webkit-inline-box"})}
+`;
+const MintContainer = styled.div``;
 
 const mainDomain = ".pika";
 const CONTRACT_ADDRESS = "0xB02716aBF48c10843f4dDFb559b59728002f9D43";
@@ -209,9 +278,7 @@ const Home = () => {
   const [network, setNetwork] = useState("");
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
-
-
-
+  const [mints, setMints] = useState([]);
 
   const connectYourWallet = async () => {
     try {
@@ -241,7 +308,6 @@ const Home = () => {
       console.log(ethereum, "is the object");
     }
 
-  
     const accounts = await ethereum.request({ method: "eth_accounts" });
 
     if (accounts.length !== 0) {
@@ -294,16 +360,15 @@ const Home = () => {
         const receipt = await tx.wait();
 
         if (receipt.status === 1) {
-          console.log(
+          alert(
             "Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash
           );
 
           tx = contract.setRecord(domain, record);
 
           await tx.wait();
-          console.log(
-            "Record set! https://mumbai.polygonscan.com/tx/" + tx.hash
-          );
+          console.log("record is set to", record)
+          
 
           tx = contract.setEmail(domain, email);
           await tx.wait();
@@ -323,9 +388,13 @@ const Home = () => {
 
           console.log(domain, ",s pfp set to", profilePic);
 
-          console.log(
-            "Record set! https://mumbai.polygonscan.com/tx/" + tx.hash
+          alert(
+            "Records set! https://mumbai.polygonscan.com/tx/" + tx.hash
           );
+
+          setTimeout(() => {
+            fetchMints();
+          }, 2000);
 
           setRecord("");
           setDomain("");
@@ -342,7 +411,7 @@ const Home = () => {
     }
   };
 
-  const updateDomain = async() => {
+  const updateDomain = async () => {
     if (!record || !domain) {
       return;
     }
@@ -350,23 +419,27 @@ const Home = () => {
     console.log("Updating domain", domain, "with record", record);
 
     try {
-      const {ethereum} = window;
+      const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const contract = new ethers.Contract(CONTRACT_ADDRESS, Domains.abi, signer);
+        const contract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          Domains.abi,
+          signer
+        );
         let tx = await contract.setRecord(domain, record);
         await tx.wait();
-        console.log("Record set https://mumbai.polygonscan.com/tx/"+tx.hash);
+        alert("Record set https://mumbai.polygonscan.com/tx/" + tx.hash);
         fetchMints();
-			setRecord('');
-			setDomain('');
+        setRecord("");
+        setDomain("");
       }
-    } catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
     setLoading(false);
-  }
+  };
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
@@ -376,11 +449,10 @@ const Home = () => {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x13881" }], // Check networks.js for hexadecimal network ids
+          params: [{ chainId: "0x13881" }], 
         });
       } catch (error) {
-        // This error code means that the chain we want has not been added to MetaMask
-        // In this case we ask the user to add it to their MetaMask
+    
         if (error.code === 4902) {
           try {
             await window.ethereum.request({
@@ -413,9 +485,96 @@ const Home = () => {
     }
   };
   const fetchMints = async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          CONTRACT_ADDRESS,
+          Domains.abi,
+          signer
+        );
 
-  }
+        const names = await contract.getAllNames();
 
+        const mintRecords = await Promise.all(
+          names.map(async (name) => {
+            const mintRecord = await contract.records(name);
+            const email = await contract.emails(name)
+            const owner = await contract.domains(name);
+            return {
+              id: name.indexOf(name),
+              name: name,
+              record: mintRecord,
+              owner: owner,
+              email: email
+            };
+          })
+        );
+        console.log("MINTS FETCHED ", mintRecords);
+        setMints(mintRecords);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (network === "Polygon Mumbai Testnet") {
+      fetchMints();
+    }
+  }, [currentAccount, network]);
+
+  const editRecord = (name) => {
+    console.log("Editing record for", name);
+    setEditing(true);
+    setDomain(name);
+  };
+  const renderMints = () => {
+    if (currentAccount && mints.length > 0) {
+      return (
+        <MintContainer>
+          <Subtitle>Recently Minted</Subtitle>
+          <MintList>
+            {mints.map((mint, index) => {
+              return (
+                <MintItem key={index}>
+                  <MintRow>
+                    <a
+                      href={`https://testnets.opensea.io/assets/mumbai/${CONTRACT_ADDRESS}/${mint.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Subtitle color="black">
+                        {mint.name}
+                        {mainDomain}
+                      </Subtitle>
+                    </a>
+                    {mint.owner.toLowerCase() ===
+                    currentAccount.toLowerCase() ? (
+                      <EditButton
+                        className="edit-button"
+                        onClick={() => editRecord(mint.name)}
+                      >
+                        <EditImage
+                          className="edit-icon"
+                          src="https://img.icons8.com/metro/26/000000/pencil.png"
+                          alt="Edit button"
+                        />
+                      </EditButton>
+                    ) : null}
+                  </MintRow>
+                  <Subtitle>{mint.record}</Subtitle>
+                </MintItem>
+              );
+            })}
+          </MintList>
+        </MintContainer>
+      );
+    }
+  };
+
+  //input form render logic
   const renderInputForm = () => {
     if (network !== "Polygon Mumbai Testnet") {
       return (
@@ -468,25 +627,27 @@ const Home = () => {
           placeholder="link a profile pic link to this domain?"
           onChange={(e) => setProfilePic(e.target.value)}
         />
-       
-       {editing ? (
-						<ButtonsContainer>
-						
-							<ButtonOne disabled={loading} onClick={updateDomain}>
-								Set record
-							</ButtonOne>  
-						
-							<ButtonOne onClick={() => {setEditing(false)}}>
-								Cancel
-							</ButtonOne>  
-						</ButtonsContainer>
-					) : (
-						// If editing is not true, the mint button will be returned instead
-						<ButtonOne disabled={loading} onClick={mintDomain}>
-							Mint
-						</ButtonOne>  
-					)}
-        
+
+        {editing ? (
+          <ButtonsContainer>
+            <ButtonOne disabled={loading} onClick={updateDomain}>
+              Set record
+            </ButtonOne>
+
+            <ButtonOne
+              onClick={() => {
+                setEditing(false);
+              }}
+            >
+              Cancel
+            </ButtonOne>
+          </ButtonsContainer>
+        ) : (
+          // If editing is not true, the mint button will be returned instead
+          <ButtonOne disabled={loading} onClick={mintDomain}>
+            Mint
+          </ButtonOne>
+        )}
       </FormContainer>
     );
   };
@@ -503,8 +664,7 @@ const Home = () => {
           </Left>
           <Right>
             <Image
-              alt="Network logo"
-              className="logo"
+              
               src={network.includes("Polygon") ? polygonLogo : ethLogo}
             />
             {currentAccount ? (
@@ -531,6 +691,7 @@ const Home = () => {
         </NotConnected>
       )}
       {currentAccount && renderInputForm()}
+      {mints && renderMints()}
       <div className="footer-container"></div>
     </Container>
   );
