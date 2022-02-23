@@ -16,6 +16,31 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const CollectionButton = styled.button`
+ background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(7,6,93,1) 35%, rgba(9,9,121,1) 69%, rgba(0,212,255,1) 100%);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  font-weight: 500;
+  font-size: 20px;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  border-radius: 10px;
+  width: 50%;
+  cursor: pointer;
+  margin-top: 10px;
+
+  &:hover{
+    background: radial-gradient(circle, rgba(33,36,0,1) 0%, rgba(121,9,60,1) 0%, rgba(55,203,2,1) 79%, rgba(93,6,78,1) 96%, rgba(0,255,18,1) 100%);
+    color: black;
+
+  }
+`
+const ButtonContainers = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const NotConnected = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,8 +51,9 @@ const NotConnected = styled.div`
 
 const Image = styled.img`
   margin-bottom: 30px;
-  ${mobile({ width: "50%", marginBottom: "50px" })}`;
-
+  width: 50%;
+  ${mobile({ width: "50%", marginBottom: "50px" })}
+`;
 
 const ConnectWalletButton = styled.button`
   background-image: linear-gradient(
@@ -47,13 +73,21 @@ const ConnectWalletButton = styled.button`
   font-family: "Poppins", sans-serif;
   border-radius: 10px;
   width: 50%;
+  cursor: pointer;
+
+  &:hover{
+    background: yellow;
+    color: black;
+
+  }
 `;
 
 const ConnectWalletContainer = styled.div``;
 
 const HeaderContainer = styled.div`
   padding-top: 30px;
-  ${mobile({ display: "flex", flexDirection: "column" })}`;
+  ${mobile({ display: "flex", flexDirection: "column" })}
+`;
 
 const MintItem = styled.div`
   display: flex;
@@ -75,7 +109,7 @@ const MintItem = styled.div`
   }
 
   :nth-child(3n) {
-    background-color:cyan;
+    background-color: cyan;
   }
 `;
 
@@ -91,8 +125,8 @@ const Title = styled.p`
   font-weight: 600;
   font-size: 34px;
   font-family: "Poppins", sans-serif;
-  ${mobile({ fontSize: "20px" })}`;
-
+  ${mobile({ fontSize: "20px" })}
+`;
 
 const Footer = styled.footer`
   background: red;
@@ -107,18 +141,28 @@ const Header = styled.header`
   flex-direction: row;
   justify-content: space-between;
   padding: 10px 10px 10px 10px;
-  ${mobile({ display: "flex", flexDirection: "column", fontSize:"10px", alignItems: "center", justifyContent: "center", textOverflow: "none", padding:"0", marginLeft: "50px", marginRight: "20px" })};
+  ${mobile({
+    display: "flex",
+    flexDirection: "column",
+    fontSize: "10px",
+    alignItems: "center",
+    justifyContent: "center",
+    textOverflow: "none",
+    padding: "0",
+    marginLeft: "50px",
+    marginRight: "20px",
+  })};
 `;
 
 const Left = styled.div`
   text-align: left;
   margin-left: 10%;
-  ${mobile({marginLeft: "0px"})}
+  ${mobile({ marginLeft: "0px" })}
 `;
 
 const Subtitle = styled.span`
   font-size: 25px;
-  color: ${props => props.color};
+  color: ${(props) => props.color};
   ${mobile({ fontSize: "15px", textAlign: "center" })}
 `;
 
@@ -128,7 +172,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  `;
+`;
 
 const FormInput = styled.input`
   border: 0;
@@ -143,16 +187,14 @@ const FormInput = styled.input`
   color: black;
   font-weight: 600;
   font-family: "Poppins", sans-serif;
-  ${mobile({width: "250px"})}
-  
-  ;
+  ${mobile({ width: "250px" })};
 
   &::placeholder {
     color: gray;
     letter-spacing: 0.1px;
     font-size: 19px;
     font-weight: 200;
-    ${mobile({fontSize: "14px"})}
+    ${mobile({ fontSize: "14px" })}
   }
 
   &:focus {
@@ -160,7 +202,12 @@ const FormInput = styled.input`
   }
 `;
 
-const ButtonsContainer = styled.div``;
+const ButtonsContainer = styled.div`
+display: flex;
+flex-direction: column;
+width: 100%;
+align-items: center;
+`;
 
 const ButtonOne = styled.button`
   height: 45px;
@@ -227,18 +274,21 @@ const MainDomainText = styled.p`
   padding: 0;
   margin-bottom: 13px;
 `;
-
+const CollectionLink = styled.a`
+text-decoration: none;
+color: white;
+`
 const Right = styled.div`
   display: flex;
   background: black;
   border-radius: 16px;
-  padding: 12px 12px;
-  height: 99%;
+  padding: 5px 5px;
+  height: 50%;
   margin-right: 10%;
   margin-top: 10px;
   font-family: "Poppins";
   font-weight: bolder;
-  ${mobile({marginBottom: "10px"})}
+  ${mobile({ marginBottom: "10px" })}
 `;
 
 const EditButton = styled.button`
@@ -261,7 +311,7 @@ const MintList = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
-  ${mobile({ display: "-webkit-inline-box"})}
+  ${mobile({ display: "-webkit-inline-box" })}
 `;
 const MintContainer = styled.div``;
 
@@ -360,15 +410,12 @@ const Home = () => {
         const receipt = await tx.wait();
 
         if (receipt.status === 1) {
-          alert(
-            "Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash
-          );
+          alert("Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash);
 
           tx = contract.setRecord(domain, record);
 
           await tx.wait();
-          console.log("record is set to", record)
-          
+          console.log("record is set to", record);
 
           tx = contract.setEmail(domain, email);
           await tx.wait();
@@ -388,9 +435,7 @@ const Home = () => {
 
           console.log(domain, ",s pfp set to", profilePic);
 
-          alert(
-            "Records set! https://mumbai.polygonscan.com/tx/" + tx.hash
-          );
+          alert("Records set! https://mumbai.polygonscan.com/tx/" + tx.hash);
 
           setTimeout(() => {
             fetchMints();
@@ -449,10 +494,9 @@ const Home = () => {
       try {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: "0x13881" }], 
+          params: [{ chainId: "0x13881" }],
         });
       } catch (error) {
-    
         if (error.code === 4902) {
           try {
             await window.ethereum.request({
@@ -501,14 +545,14 @@ const Home = () => {
         const mintRecords = await Promise.all(
           names.map(async (name) => {
             const mintRecord = await contract.records(name);
-            const email = await contract.emails(name)
+            const email = await contract.emails(name);
             const owner = await contract.domains(name);
             return {
               id: name.indexOf(name),
               name: name,
               record: mintRecord,
               owner: owner,
-              email: email
+              email: email,
             };
           })
         );
@@ -663,10 +707,7 @@ const Home = () => {
             </Subtitle>
           </Left>
           <Right>
-            <Image
-              
-              src={network.includes("Polygon") ? polygonLogo : ethLogo}
-            />
+            <Image src={network.includes("Polygon") ? polygonLogo : ethLogo} />
             {currentAccount ? (
               <p>
                 {" "}
@@ -685,9 +726,14 @@ const Home = () => {
             src="https://c.tenor.com/3IACtMvxwdsAAAAi/pikachu-happy.gif"
             alt="Pika gif"
           />
-          <ConnectWalletButton onClick={connectYourWallet}>
-            🌀 Connect Wallet 🌀
-          </ConnectWalletButton>
+          <ButtonsContainer>
+            <ConnectWalletButton onClick={connectYourWallet}>
+              🌀 Connect Wallet 🌀
+            </ConnectWalletButton>
+            <CollectionButton>
+         <CollectionLink href="https://testnets.opensea.io/collection/pika-name-service-x67em8jf7d">   🌀 View Collection 🌀 </CollectionLink>
+            </CollectionButton>
+          </ButtonsContainer>
         </NotConnected>
       )}
       {currentAccount && renderInputForm()}
