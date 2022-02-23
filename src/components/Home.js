@@ -316,7 +316,7 @@ const MintList = styled.div`
 const MintContainer = styled.div``;
 
 const mainDomain = ".pika";
-const CONTRACT_ADDRESS = "0xB02716aBF48c10843f4dDFb559b59728002f9D43";
+const CONTRACT_ADDRESS = "0xB9893e76523B25D82B8f4Ad70A2e7081678B1a31";
 const Home = () => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [domain, setDomain] = useState("");
@@ -731,7 +731,7 @@ const Home = () => {
               🌀 Connect Wallet 🌀
             </ConnectWalletButton>
             <CollectionButton>
-         <CollectionLink href="https://testnets.opensea.io/collection/pika-name-service-x67em8jf7d">   🌀 View Collection 🌀 </CollectionLink>
+         <CollectionLink href="https://testnets.opensea.io/collection/pika-name-service-2xzdiq0wbe">   🌀 View Collection 🌀 </CollectionLink>
             </CollectionButton>
           </ButtonsContainer>
         </NotConnected>
